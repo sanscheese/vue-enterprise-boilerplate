@@ -17,6 +17,16 @@ export default {
       tryingToLogIn: false,
     }
   },
+  computed: {
+    placeholders() {
+      return process.env.NODE_ENV === 'production'
+        ? {}
+        : {
+            username: 'Use "admin" to log in with the mock API',
+            password: 'Use "password" to log in with the mock API',
+          }
+    },
+  },
   methods: {
     ...authMethods,
     // Try to log the user in with the username
@@ -29,13 +39,13 @@ export default {
         username: this.username,
         password: this.password,
       })
-        .then(token => {
+        .then((token) => {
           this.tryingToLogIn = false
 
           // Redirect to the originally requested page, or to the home page
           this.$router.push(this.$route.query.redirectFrom || { name: 'home' })
         })
-        .catch(error => {
+        .catch((error) => {
           this.tryingToLogIn = false
           this.authError = error
         })
@@ -46,28 +56,20 @@ export default {
 
 <template>
   <Layout>
-    <form
-      :class="$style.form"
-      @submit.prevent="tryToLogIn"
-    >
+    <form :class="$style.form" @submit.prevent="tryToLogIn">
       <BaseInput
         v-model="username"
         name="username"
+        :placeholder="placeholders.username"
       />
       <BaseInput
         v-model="password"
         name="password"
         type="password"
+        :placeholder="placeholders.password"
       />
-      <BaseButton
-        :disabled="tryingToLogIn"
-        type="submit"
-      >
-        <BaseIcon
-          v-if="tryingToLogIn"
-          name="sync"
-          spin
-        />
+      <BaseButton :disabled="tryingToLogIn" type="submit">
+        <BaseIcon v-if="tryingToLogIn" name="sync" spin />
         <span v-else>
           Log in
         </span>

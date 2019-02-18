@@ -40,19 +40,19 @@
     { "language": "html", "autoFix": true }
   ],
   "vetur.completion.useScaffoldSnippets": false,
+  "prettier.disableLanguages": [],
 
   // ===
   // HTML
   // ===
 
   "html.format.enable": false,
-  "html.suggest.angular1": false,
-  "html.suggest.ionic": false,
   "vetur.validation.template": false,
   "emmet.triggerExpansionOnTab": true,
   "emmet.includeLanguages": {
     "vue-html": "html"
   },
+  "vetur.format.defaultFormatter.html": "none",
 
   // ===
   // JS(ON)
@@ -63,6 +63,7 @@
   "javascript.format.enable": false,
   "json.format.enable": false,
   "vetur.validation.script": false,
+  "vetur.format.defaultFormatter.js": "none",
 
   // ===
   // CSS
@@ -72,6 +73,9 @@
   "css.validate": false,
   "scss.validate": false,
   "vetur.validation.style": false,
+  "vetur.format.defaultFormatter.css": "none",
+  "vetur.format.defaultFormatter.postcss": "none",
+  "vetur.format.defaultFormatter.scss": "none",
 
   // ===
   // MARKDOWN

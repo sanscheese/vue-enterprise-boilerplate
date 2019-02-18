@@ -34,25 +34,13 @@ Vue.config.productionTip = false
 
 const globalComponentFiles = fs
   .readdirSync(path.join(__dirname, '../../src/components'))
-  .filter(fileName => /^_base-.+\.vue$/.test(fileName))
+  .filter((fileName) => /^_base-.+\.vue$/.test(fileName))
 
 for (const fileName of globalComponentFiles) {
   const componentName = _.pascalCase(fileName.match(/^_(base-.+)\.vue$/)[1])
   const componentConfig = require('../../src/components/' + fileName)
   Vue.component(componentName, componentConfig.default || componentConfig)
 }
-
-// ===
-// Patch all components with a global mixin
-// ===
-
-Vue.mixin({
-  created() {
-    // HACK: Set a fallback for the `$style` until vue-jest
-    // includes better support for CSS modules.
-    this.$style = this.$style || {}
-  },
-})
 
 // ===
 // Mock window properties not handled by jsdom
@@ -133,7 +121,7 @@ global.createComponentMocks = ({ store, router, style, mocks, stubs }) => {
     localVue.use(Vuex)
     returnOptions.store = new Vuex.Store({
       modules: Object.keys(store)
-        .map(moduleName => {
+        .map((moduleName) => {
           const storeModule = store[moduleName]
           return {
             [moduleName]: {

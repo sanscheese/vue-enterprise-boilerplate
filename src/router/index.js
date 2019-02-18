@@ -41,7 +41,7 @@ router.beforeEach((routeTo, routeFrom, next) => {
 
   // Check if auth is required on this route
   // (including nested routes).
-  const authRequired = routeTo.matched.some(route => route.meta.authRequired)
+  const authRequired = routeTo.matched.some((route) => route.meta.authRequired)
 
   // If auth isn't required for the route, just continue.
   if (!authRequired) return next()
@@ -49,7 +49,7 @@ router.beforeEach((routeTo, routeFrom, next) => {
   // If auth is required and the user is logged in...
   if (store.getters['auth/loggedIn']) {
     // Validate the local user token...
-    return store.dispatch('auth/validate').then(validUser => {
+    return store.dispatch('auth/validate').then((validUser) => {
       // Then continue if the token still represents a valid user,
       // otherwise redirect to login.
       validUser ? next() : redirectToLogin()
@@ -81,7 +81,14 @@ router.beforeResolve(async (routeTo, routeFrom, next) => {
         // the same arguments as the `beforeEnter` hook.
         if (route.meta && route.meta.beforeResolve) {
           route.meta.beforeResolve(routeTo, routeFrom, (...args) => {
+            // If the user chose to redirect...
             if (args.length) {
+              // If redirecting to the same route we're coming from...
+              if (routeFrom.name === args[0].name) {
+                // Complete the animation of the route progress bar.
+                NProgress.done()
+              }
+              // Complete the redirect.
               next(...args)
               reject(new Error('Redirected'))
             } else {

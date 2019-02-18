@@ -1,5 +1,6 @@
 <script>
 export default {
+  inheritAttrs: false,
   props: {
     href: {
       type: String,
@@ -50,7 +51,7 @@ export default {
           )
         }
         // Check for insecure URL in href.
-        if (!this.allowInsecure && !/^https/.test(this.href)) {
+        if (!this.allowInsecure && !/^(https|mailto|tel):/.test(this.href)) {
           return console.warn(
             `Insecure <BaseLink> href: ${
               this.href
@@ -75,19 +76,10 @@ export default {
 </script>
 
 <template>
-  <a
-    v-if="href"
-    v-bind="$attrs"
-    :href="href"
-    target="_blank"
-  >
+  <a v-if="href" :href="href" target="_blank" v-bind="$attrs">
     <slot />
   </a>
-  <router-link
-    v-else
-    v-bind="$attrs"
-    :to="routerLinkTo"
-  >
+  <RouterLink v-else :to="routerLinkTo" v-bind="$attrs">
     <slot />
-  </router-link>
+  </RouterLink>
 </template>

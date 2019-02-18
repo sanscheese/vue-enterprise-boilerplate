@@ -13,6 +13,7 @@
     - [Introduction to Cypress](#introduction-to-cypress)
     - [Accessibility-driven end-to-end tests](#accessibility-driven-end-to-end-tests)
   - [The mock API](#the-mock-api)
+    - [Mock authentication](#mock-authentication)
     - [Testing/developing against a real server](#testingdeveloping-against-a-real-server)
 
 ## Running all tests
@@ -28,10 +29,10 @@ yarn test
 
 ```bash
 # Run unit tests
-yarn unit
+yarn test:unit
 
 # Run unit tests in watch mode
-yarn unit:watch
+yarn test:unit:watch
 ```
 
 ### Introduction to Jest
@@ -68,7 +69,7 @@ Jest offers many tools for mocks, including:
 
 ```bash
 # Run end to end tests
-yarn e2e
+yarn test:e2e
 
 # Run the dev server with the Cypress client
 yarn dev:e2e
@@ -90,7 +91,7 @@ And much more! I recommend checking out our Cypress tests in `tests/e2e/specs`, 
 Beyond that, also know that you can access our app in Cypress on the `window`. For example, to dispatch a Vuex action that sets up some state:
 
 ```js
-cy.window().then(window => {
+cy.window().then((window) => {
   return window.__app__.$store.dispatch('someModule/someAction')
 })
 ```
@@ -169,14 +170,8 @@ But when you're trying to find a login link as a user, you don't just inspect th
 Instead, thinking from a user's perspective forces you to stay accessible, perhaps updating your generated HTML to:
 
 ```html
-<a
-  aria-label="Log in"
-  href="/login"
->
-  <span
-    aria-hidden="true"
-    class="icon icon-login"
-  ></span>
+<a aria-label="Log in" href="/login">
+  <span aria-hidden="true" class="icon icon-login"></span>
 </a>
 ```
 
@@ -204,6 +199,10 @@ Working against the production API can be useful sometimes, but it also has some
 - To work on a frontend feature, the backend for it must already be complete.
 
 The mock API is an [Express](https://expressjs.com/) server in `tests/mock-api` you can extend to - you guessed it - mock what the real API would do, solving all the problems listed above. This solution is also backend-agnostic, making it ideal for a wide variety of projects.
+
+### Mock authentication
+
+See the [`users` resource](../tests/mock-api/resources/users.js) in the mock API for a list of usernames and passwords you can use in development.
 
 ### Testing/developing against a real server
 
